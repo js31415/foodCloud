@@ -3,7 +3,8 @@
     "baseUrl": "src",
     "paths": {
       "components/*": ["./components/*"],
-      "features/*": ["./features/*"]
+      "features/*": ["./features/*"],
+      "assets/*": ["../assets/*"]
     },
     "allowSyntheticDefaultImports": true,
     "jsx": "react-native",
