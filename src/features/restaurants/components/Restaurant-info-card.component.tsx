@@ -14,28 +14,17 @@ import {
   Icon,
 } from "./Restaurant-info-card.styles";
 
-interface RestaurantInfoCardProps {
-  restaurant: {
-    name: string;
-    icon: string;
-    photos: string[];
-    address: string;
-    isOpenNow: boolean;
-    rating: number;
-    isClosedTemporarily?: boolean;
-  };
-}
-
-export const RestaurantInfoCard = (props: RestaurantInfoCardProps) => {
+export const RestaurantInfoCard = (props: any) => {
   const {
     name,
     icon,
     photos,
-    address,
+    address = "100 street random city",
     rating,
     isClosedTemporarily,
     isOpenNow,
   } = props.restaurant;
+
   const ratingArray = Array.from(new Array(Math.floor(rating)));
 
   return (
@@ -50,9 +39,7 @@ export const RestaurantInfoCard = (props: RestaurantInfoCardProps) => {
             ))}
           </Rating>
           <SectionEnd>
-            {isClosedTemporarily && (
-              <Text variant={"error"}>CLOSED TEMPORARILY</Text>
-            )}
+            {isClosedTemporarily && <Text variant={"error"}>CLOSED</Text>}
             <Spacer position="left" size="large">
               {isOpenNow && <SvgXml xml={open} width={20} height={20} />}
             </Spacer>

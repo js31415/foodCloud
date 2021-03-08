@@ -4,7 +4,9 @@
     "paths": {
       "components/*": ["./components/*"],
       "features/*": ["./features/*"],
-      "assets/*": ["../assets/*"]
+      "services/*": ["./services/*"],
+      "assets/*": ["../assets/*"],
+      "infrastructure/*": ["./infrastructure/*"]
     },
     "allowSyntheticDefaultImports": true,
     "jsx": "react-native",

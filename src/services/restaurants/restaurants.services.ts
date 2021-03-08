@@ -1,19 +1,26 @@
-import { mocks } from "./mock";
-import camelize from "camelize-ts";
+import { mockImages, mocks } from "./mock";
+import camelize from "camelize";
 
-export const restaurantsRequest = (location = "37.7749295,-122.4194155") => {
+
+export const restaurantsRequest = (location: string) => {
   return new Promise((resolve, reject) => {
-    if (!mocks) {
+    const mock = mocks[location];
+    if (!mock) {
       reject("not found");
     }
-    return resolve(mocks[location]);
+    resolve(mock);
   });
 };
 
-export const restaurantTransform = ({ results = [] }) => {
+export const restaurantTransform = ({ results = [] }: any) => {
   const mappedResults = results.map((restaurant: any) => {
+    restaurant.photos = restaurant.photos.map((_p: any) => {
+      return mockImages[Math.ceil(Math.random() * (mockImages.length - 1))];
+    });
+
     return {
       ...restaurant,
+      address: restaurant.vicinity,
       isOpenNow: restaurant.opening_hours && restaurant.opening_hours.open_now,
       isClosedTemporarily: restaurant.business_status === "CLOSED_TEMPORARILY",
     };
