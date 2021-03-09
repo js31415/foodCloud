@@ -1,1 +1,1 @@
-export { Text } from "./Text.component";
+export { Text } from "./text.component";

@@ -1,1 +1,1 @@
-export { RestaurantInfoCard } from "./Restaurant-info-card.component";
+export { RestaurantInfoCard } from "./restaurant-info-card.component";

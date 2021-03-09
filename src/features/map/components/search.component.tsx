@@ -6,10 +6,14 @@ import styled from "styled-components";
 
 const SearchContainer = styled(View)`
   padding: ${(props) => props.theme.space[3]};
+  position: absolute;
+  z-index: 999;
+  margin-top: 40px;
+  width: 100%;
 `;
 
 export const Search = () => {
-  const { keyword, setKeyword } = useLocation();
+  const { setKeyword, keyword } = useLocation();
   const [searchKeyword, setSearchKeyword] = useState(keyword);
 
   useEffect(() => {
@@ -21,6 +25,7 @@ export const Search = () => {
       <Searchbar
         placeholder="Search for a location"
         value={searchKeyword}
+        icon="map"
         onSubmitEditing={() => {
           setKeyword(searchKeyword);
         }}

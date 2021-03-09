@@ -10,21 +10,26 @@ import {
   restaurantTransform,
 } from "./restaurants.services";
 
-import { LocationContext } from "../locations/locations.context";
+import { useLocation } from "../locations/locations.context";
+import { RestaurantRequest } from "services/app-interfaces";
 
-const defaultValue = {
-  restaurants: [],
-  isLoading: false,
-  error: null,
+type RestaurantsContextType = {
+  restaurants: RestaurantRequest[] | undefined;
+  isLoading: boolean;
+  error: null | string;
 };
 
-export const RestaurantsContext = createContext(defaultValue);
+export const RestaurantsContext = createContext<
+  RestaurantsContextType | undefined
+>(undefined);
 
-export const RestaurantsContextProvider = (props: { children: ReactNode }) => {
-  const [restaurants, setRestaurants] = useState([]);
+const RestaurantsContextProvider = (props: { children: ReactNode }) => {
+  const [restaurants, setRestaurants] = useState<
+    RestaurantRequest[] | undefined
+  >(undefined);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const { location } = useContext(LocationContext);
+  const { location } = useLocation();
 
   const retriveRestaurants = (loc: string) => {
     setIsLoading(true);
@@ -46,7 +51,7 @@ export const RestaurantsContextProvider = (props: { children: ReactNode }) => {
 
   useEffect(() => {
     if (location) {
-      const locationString = `${location.lat},${location.lng}`;
+      const locationString = `${location.coordinates.lat},${location.coordinates.lng}`;
       retriveRestaurants(locationString);
     }
   }, [location]);
@@ -64,7 +69,12 @@ export const RestaurantsContextProvider = (props: { children: ReactNode }) => {
   );
 };
 
-export const useRestaurants = (context: any) => {
-  if (!context) return undefined;
-  return useContext(context);
-};
+function useRestaurants() {
+  const context = useContext(RestaurantsContext);
+  if (context === undefined) {
+    throw new Error("useRestaurants must be used within a RestaurantsProvider");
+  }
+  return context;
+}
+
+export { RestaurantsContextProvider, useRestaurants };

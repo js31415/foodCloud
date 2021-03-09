@@ -1,4 +1,6 @@
-export const locations = {
+import { Places } from "services/app-interfaces";
+
+export const locations: Places = {
   antwerp: {
     results: [
       {

@@ -12,9 +12,14 @@ import {
   RestaurantCard,
   RestaurantCardCover,
   Icon,
-} from "./Restaurant-info-card.styles";
+} from "./restaurant-info-card.styles";
+import { RestaurantRequest } from "services/app-interfaces";
 
-export const RestaurantInfoCard = (props: any) => {
+interface RestaurantInfoCardProps {
+  restaurant: RestaurantRequest;
+}
+
+export const RestaurantInfoCard = (props: RestaurantInfoCardProps) => {
   const {
     name,
     icon,
@@ -35,7 +40,12 @@ export const RestaurantInfoCard = (props: any) => {
         <Section>
           <Rating>
             {ratingArray.map((_, i) => (
-              <SvgXml xml={star} key={i} width={20} height={20} />
+              <SvgXml
+                xml={star}
+                key={`star-${i}-name`}
+                width={20}
+                height={20}
+              />
             ))}
           </Rating>
           <SectionEnd>

@@ -1,21 +1,21 @@
 import React from "react";
-import { FlatList } from "react-native";
+import { FlatList, ListRenderItem, StyleSheet } from "react-native";
 import { Colors, ActivityIndicator } from "react-native-paper";
 import { RestaurantInfoCard } from "features/restaurants/components";
 import styled from "styled-components/native";
 import { Spacer } from "components/spacer";
 import { SafeArea } from "components/utility";
-import { Search } from "../components/Search.component";
-import {
-  RestaurantsContext,
-  useRestaurants,
-} from "services/restaurants/restaurants.context";
+import { Search } from "../components/search.component";
+import { useRestaurants } from "services/restaurants/restaurants.context";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { StackScreenProps } from "@react-navigation/stack";
+import { RestaurantParamList } from "infrastructure/navigation/restaurant.navigation";
+import { RestaurantRequest } from "services/app-interfaces";
 
-const RestaurantList = styled(FlatList).attrs({
-  contentContainerStyle: {
-    padding: 16,
-  },
-})``;
+type RestaurantScreenProps = StackScreenProps<
+  RestaurantParamList,
+  "Restaurant"
+>;
 
 const Loading = styled(ActivityIndicator)`
   margin-left: -25px;
@@ -27,8 +27,24 @@ const LoadingContainer = styled.View`
   left 50%;
 `;
 
-export const RestaurantsScreen = () => {
-  const { isLoading, restaurants } = useRestaurants(RestaurantsContext);
+export const RestaurantsScreen = (props: RestaurantScreenProps) => {
+  const { isLoading, restaurants } = useRestaurants();
+
+  const renderItem: ListRenderItem<RestaurantRequest> = ({ item }) => {
+    return (
+      <TouchableOpacity
+        onPress={() =>
+          props.navigation.navigate("RestaurantDetail", {
+            restaurant: item,
+          })
+        }
+      >
+        <Spacer position="bottom" size="large">
+          <RestaurantInfoCard restaurant={item} />
+        </Spacer>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <>
@@ -39,16 +55,19 @@ export const RestaurantsScreen = () => {
           </LoadingContainer>
         )}
         <Search />
-        <RestaurantList
+        <FlatList
           data={restaurants}
-          renderItem={({ item }) => (
-            <Spacer position="bottom" size="large">
-              <RestaurantInfoCard restaurant={item} />
-            </Spacer>
-          )}
+          contentContainerStyle={styles.listContainer}
+          renderItem={renderItem}
           keyExtractor={(item: any) => item.name}
         />
       </SafeArea>
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  listContainer: {
+    padding: 16,
+  },
+});

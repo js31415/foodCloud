@@ -1,1 +1,1 @@
-export { SafeArea } from "./SafeArea.component";
+export { SafeArea } from "./safe-area.component";
