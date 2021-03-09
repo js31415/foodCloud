@@ -1,5 +1,14 @@
 {
   "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "components/*": ["./components/*"],
+      "features/*": ["./features/*"],
+      "services/*": ["./services/*"],
+      "assets/*": ["../assets/*"],
+      "infrastructure/*": ["./infrastructure/*"],
+      "utils/*": ["./utils/*"],
+    },
     "allowSyntheticDefaultImports": true,
     "jsx": "react-native",
     "lib": ["dom", "esnext"],
