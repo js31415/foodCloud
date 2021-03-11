@@ -14,6 +14,7 @@ import {
   Icon,
 } from "./restaurant-info-card.styles";
 import { RestaurantRequest } from "services/app-interfaces";
+import { Favorite } from "components/favorites";
 
 interface RestaurantInfoCardProps {
   restaurant: RestaurantRequest;
@@ -34,6 +35,7 @@ export const RestaurantInfoCard = (props: RestaurantInfoCardProps) => {
 
   return (
     <RestaurantCard elevation={5}>
+      <Favorite restaurant={props.restaurant} />
       <RestaurantCardCover key={name} source={{ uri: photos[0] }} />
       <Info>
         <Text variant={"label"}>{name}</Text>
@@ -50,10 +52,10 @@ export const RestaurantInfoCard = (props: RestaurantInfoCardProps) => {
           </Rating>
           <SectionEnd>
             {isClosedTemporarily && <Text variant={"error"}>CLOSED</Text>}
-            <Spacer position="left" size="large">
+            <Spacer position="left" size="small">
               {isOpenNow && <SvgXml xml={open} width={20} height={20} />}
             </Spacer>
-            <Spacer position="left" size="large">
+            <Spacer position="left" size="small">
               <Icon source={{ uri: icon }} />
             </Spacer>
           </SectionEnd>

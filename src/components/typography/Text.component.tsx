@@ -9,6 +9,10 @@ margin-top: 0px;
 margin-bottom: 0px;
 `;
 
+const title = (theme: DefaultTheme) => `
+font-size: ${theme.fontSizes.title};
+`;
+
 const body = (theme: DefaultTheme) => `
     font-size: ${theme.fontSizes.body};
 `;
@@ -38,6 +42,7 @@ const variants = {
   caption,
   error,
   hint,
+  title,
 };
 
 interface TextProps {
