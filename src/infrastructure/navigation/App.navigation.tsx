@@ -1,21 +1,26 @@
 import React from "react";
-import { Text } from "react-native";
 import { SafeArea } from "components/utility";
 import { Ionicons } from "@expo/vector-icons";
-import { RouteProp, NavigationContainer } from "@react-navigation/native";
+import { RouteProp } from "@react-navigation/native";
+import { Button } from "react-native-paper";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { RestaurantNavigator } from "./restaurant.navigation";
 import { MapScreen } from "features/map/screens";
+import { RestaurantRequest } from "services/app-interfaces";
+import { logoutUser } from "services/authentication/authentication.context";
+import { FavoritesContextProvider } from "services/favorites/favorites.context";
+import { LocationContextProvider } from "services/locations/locations.context";
+import { RestaurantsContextProvider } from "services/restaurants/restaurants.context";
 
-type TabParamList = {
+export type TabParamList = {
   Restaurant: { name: string };
+  RestaurantDetail: { name?: string; restaurant: RestaurantRequest };
   Map: { name: string };
   Settings: { name: string };
 };
 
 interface ScreenOptionsProps {
   route: RouteProp<TabParamList, keyof TabParamList>;
-  navigation: any;
 }
 
 interface tabOptionsProps {
@@ -30,6 +35,7 @@ const TAB_ICONS = {
   Restaurant: "md-restaurant",
   Map: "md-map",
   Settings: "md-settings",
+  RestaurantDetail: "md-restaurant",
 };
 
 const tabBarOptions = {
@@ -37,11 +43,13 @@ const tabBarOptions = {
   inactiveTintColor: "gray",
 };
 
-const Settings = () => (
-  <SafeArea>
-    <Text>{"settings"}</Text>
-  </SafeArea>
-);
+const Settings = () => {
+  return (
+    <SafeArea>
+      <Button onPress={() => logoutUser()}> Logout </Button>
+    </SafeArea>
+  );
+};
 
 const createScreenOptions = (props: ScreenOptionsProps) => {
   const iconName: any = TAB_ICONS[props.route.name];
@@ -56,15 +64,19 @@ const createScreenOptions = (props: ScreenOptionsProps) => {
 
 export const AppNavigator = () => {
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={createScreenOptions}
-        tabBarOptions={tabBarOptions}
-      >
-        <Tab.Screen name="Restaurant" component={RestaurantNavigator} />
-        <Tab.Screen name="Map" component={MapScreen} />
-        <Tab.Screen name="Settings" component={Settings} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <FavoritesContextProvider>
+      <LocationContextProvider>
+        <RestaurantsContextProvider>
+          <Tab.Navigator
+            screenOptions={createScreenOptions}
+            tabBarOptions={tabBarOptions}
+          >
+            <Tab.Screen name="Restaurant" component={RestaurantNavigator} />
+            <Tab.Screen name="Map" component={MapScreen} />
+            <Tab.Screen name="Settings" component={Settings} />
+          </Tab.Navigator>
+        </RestaurantsContextProvider>
+      </LocationContextProvider>
+    </FavoritesContextProvider>
   );
 };
