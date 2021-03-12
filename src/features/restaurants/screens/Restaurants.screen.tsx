@@ -74,7 +74,7 @@ export const RestaurantsScreen = (props: RestaurantScreenProps) => {
           data={restaurants}
           contentContainerStyle={styles.listContainer}
           renderItem={renderItem}
-          keyExtractor={(item: any) => item.name}
+          keyExtractor={(item: any) => `${item.name}-${item.placeId}`}
         />
       </SafeArea>
     </>

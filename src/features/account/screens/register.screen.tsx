@@ -24,8 +24,6 @@ export const RegisterScreen = (props: RegisterScreenProps) => {
   const [repeatedPassword, setRepeatedPassword] = useState<string>("");
   const { state, dispatch } = useAuthentication();
 
-  console.log(state);
-
   return (
     <AccountBackground blurRadius={10}>
       <Text variant="title">Food CLOUD</Text>
